@@ -1,0 +1,50 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+import netCDF4 as nc
+from datetime import datetime
+
+def conv_date(d):
+   return datetime.strptime(str(d), '%Y%m%d%H%M%S%f')
+
+def convHdf(path_file, n=0):
+
+
+   data= nc.Dataset(path_file)
+
+
+   df_xco2= pd.DataFrame()
+
+
+   df_xco2['Xco2']= data.variables['xco2'][:]
+   df_xco2['Latitude']= data.variables['Latitude'][:]
+   df_xco2['Longitude']= data.variables['Longitude'][:]
+   df_xco2['quality_flag']= data.variables['xco2_quality_flag'][:]
+
+
+   df_xco2['DateTime']= data.variables['sounding_id'][:]
+
+
+   df_xco2['DateTime']= df_xco2['DateTime'].apply(conv_date)
+   df_xco2['DateTime']= pd.to_datetime(df_xco2['DateTime'])
+
+
+   df_xco2['Year']= df_xco2['DateTime'].dt.year
+   df_xco2['Month']= df_xco2['DateTime'].dt.month
+   df_xco2['Day']= df_xco2['DateTime'].dt.day
+
+
+   df_xco2= df_xco2[df_xco2['quality_flag'] == 0]
+
+
+   date= str(data.variables['sounding_id'][0])
+
+
+   df_xco2.to.csv('oco2_xco2_'+ date+ '.csv', index= False)
+   return df_xco2
+
+path_file = 'C:\\\\Users\\christinechoi\\Downloads\\oco2_LtCO2_190130_B11100Ar_230602211008s.nc4'
+
+
+convHdf(path_file)
