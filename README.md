@@ -1,4 +1,4 @@
-# NASA-OCO2-File-Conversion
+# NASA-OCO2-File-Converter
 
 NASA's OCO-2 Satellite data is stored in NetCDF4 (HDF) files, which aren't readable in QGIS (geographic information system software used by NASA). This Python script converts the data in the NetCDF4 files into CSV format. The script extracts and processes data related to atmospheric CO2 levels, including geographical and temporal information, and outputs the cleaned data into a CSV file for further analysis in QGIS. 
 
